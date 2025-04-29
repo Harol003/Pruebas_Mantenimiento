@@ -1,0 +1,35 @@
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install apache2 -y
+
+sudo apt install mariadb-server mariadb-client -y
+
+
+sudo apt install php php-mysql php-bcmath php-mbstring php-xml php-ldap php-gd php-json php-zip php-curl php-gettext libapache2-mod-php -y
+
+
+sudo apt install php8.1 php8.1-cli php8.1-common php8.1-mysql php8.1-gd php8.1-xml php8.1-mbstring php8.1-bcmath php8.1-ldap php8.1-zip php8.1-curl libapache2-mod-php8.1 -y
+
+
+sudo apt install wget curl gnupg2 lsb-release unzip -y
+
+
+sudo a2enmod php8.1
+sudo systemctl restart apache2
+
+
+wget https://repo.zabbix.com/zabbix/6.5/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.5-1+ubuntu22.04_all.deb
+sudo dpkg -i zabbix-release_6.5-1+ubuntu22.04_all.deb
+sudo apt update
+
+
+sudo apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent -y
+
+
+sudo systemctl status apache2
+sudo systemctl status mariadb
+sudo systemctl status zabbix-server
+sudo systemctl status zabbix-agent
+
+
+
