@@ -1,0 +1,97 @@
+****************************************
+INSTALAR TESTLINK
+****************************************
+
+sudo apt update
+sudo apt install apache2 mariadb-server php php-mysql php-mbstring php-xml php-curl php-gd php-cli unzip -y
+
+****************************************
+CONFIGURAR BD TESTLINK
+****************************************
+
+sudo mysql -u root -p
+
+
+CREATE DATABASE testlink DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER 'testlinkuser'@'localhost' IDENTIFIED BY 'claveSegura123';
+GRANT ALL PRIVILEGES ON testlink.* TO 'testlinkuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+
+****************************************
+DESCARGAR TESTLINK
+****************************************
+
+cd /var/www/html
+sudo wget https://downloads.sourceforge.net/project/testlink/TestLink%201.9/TestLink%201.9.20/testlink-1.9.20.tar.gz
+sudo tar -xvzf testlink-1.9.20.tar.gz
+sudo mv testlink-1.9.20 testlink
+
+****************************************
+APACHE PARA TESTLINK
+****************************************
+
+EDITAR
+
+sudo nano /etc/apache2/sites-available/testlink.conf
+
+
+<VirtualHost *:80>
+    ServerAdmin admin@tusitio.com
+    DocumentRoot /var/www/html/testlink
+    ServerName testlink.local
+
+    <Directory /var/www/html/testlink>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/testlink_error.log
+    CustomLog ${APACHE_LOG_DIR}/testlink_access.log combined
+</VirtualHost>
+
+
+HABILITAR EL SITIO 
+
+sudo a2ensite testlink
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+****************************************
+INSTALAR TESTLINK
+****************************************
+
+http://localhost/testlink/install/index.php
+
+http://testlink.local
+
+DB: mysql
+Host: localhost
+DB name: testlink
+Usuario: testlinkuser
+Contraseña: claveSegura123
+
+Al finalizar la instalación, copiar el archivo config_db.inc.php generado a la carpeta /var/www/html/testlink/config/.
+
+****************************************
+LIMPIEZA INSTALADORES DE TESTLINK
+****************************************
+
+sudo rm -rf /var/www/html/testlink/install
+
+
+****************************************
+INGRESAR A  TESTLINK
+****************************************
+
+http://localhost/testlink/login.php
+
+Usuario: admin
+Contraseña: admin
+
+
+
+
+

@@ -1,0 +1,95 @@
+****************************************
+INSTALAR MANTIS BUG TRACKERT
+****************************************
+
+sudo apt update
+sudo apt install apache2 mariadb-server php php-mysqli php-gd php-curl php-xml php-mbstring unzip -y
+
+****************************************
+CONFIGURAR BD MANTIS BUG TRACKERT
+****************************************
+
+sudo mysql -u root -p
+
+
+CREATE DATABASE mantisbt;
+CREATE USER 'mantisuser'@'localhost' IDENTIFIED BY 'claveSegura123';
+GRANT ALL PRIVILEGES ON mantisbt.* TO 'mantisuser'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+****************************************
+DESCARGAR MANTIS BUG TRACKERT
+****************************************
+
+cd /var/www/html
+sudo wget https://downloads.sourceforge.net/project/mantisbt/mantis-stable/2.26.0/mantisbt-2.26.0.zip
+sudo unzip mantisbt-2.26.0.zip
+sudo mv mantisbt-2.26.0 mantisbt
+
+****************************************
+DAR PERMISOS MANTIS BUG TRACKERT
+****************************************
+
+sudo chown -R www-data:www-data /var/www/html/mantisbt
+sudo chmod -R 755 /var/www/html/mantisbt
+
+****************************************
+CONFIGURACION APACHE MANTIS BUG TRACKERT
+****************************************
+
+sudo nano /etc/apache2/sites-available/mantisbt.conf
+
+
+AGREGAR
+
+<VirtualHost *:80>
+    ServerAdmin admin@tusitio.com
+    DocumentRoot /var/www/html/mantisbt
+    ServerName mantis.local
+
+    <Directory /var/www/html/mantisbt>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/mantisbt_error.log
+    CustomLog ${APACHE_LOG_DIR}/mantisbt_access.log combined
+</VirtualHost>
+
+
+LUEGO
+
+sudo a2ensite mantisbt
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+****************************************
+FINALIZAR  MANTIS BUG TRACKERT
+****************************************
+
+
+http://localhost/mantisbt/admin/install.php
+
+http://mantis.local
+
+Database type: MySQL/MariaDB
+Hostname: localhost
+Username: mantisuser
+Password: claveSegura123
+Database name: mantisbt
+
+Dar Clic en Install/Upgrade Database
+
+
+****************************************
+INGRESAR A  MANTIS BUG TRACKERT
+****************************************
+
+http://localhost/mantisbt
+
+Usuario: administrator
+Contraseña: root
+
+
